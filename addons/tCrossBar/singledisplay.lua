@@ -97,10 +97,15 @@ function SingleDisplay:Render(macroState)
     sprite:Begin();
 
     for _,object in ipairs(self.Layout.FixedObjects) do
-        local component = self.Layout.Textures[object.Texture];
-        vec_position.x = pos[1] + object.OffsetX;
-        vec_position.y = pos[2] + object.OffsetY;
-        sprite:Draw(component.Texture, component.Rect, component.Scale, nil, 0.0, vec_position, d3dwhite);
+        if (type(object.BeforeRender) == 'function') then
+            object:BeforeRender(macroState)
+        end
+        if (object.visible ~= false) then
+            local component = self.Layout.Textures[object.Texture];
+            vec_position.x = pos[1] + object.OffsetX;
+            vec_position.y = pos[2] + object.OffsetY;
+            sprite:Draw(component.Texture, component.Rect, component.Scale, nil, 0.0, vec_position, object.Tint or d3dwhite);
+        end
     end
 
     local group = self.ElementGroups[macroState];
