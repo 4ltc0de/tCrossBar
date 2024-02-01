@@ -320,6 +320,37 @@ function CaMMOrpg:Layout(frameType, crossbars)
     Divider.OffsetY = Panel.Height / 2 - Divider.Height / 2
     Textures[Divider.Texture] = Divider
 
+    local ActiveSide = T {}
+    ActiveSide.Texture = 'ActiveSide'
+    ActiveSide.Path = ResRoot .. 'active_side.png'
+    ActiveSide.Width = Crossbar.Width + Frame.Width / 2
+    ActiveSide.Height = Crossbar.Height + Frame.Height / 2
+    ActiveSide.OffsetX = -Frame.Width / 4
+    ActiveSide.OffsetY = -Frame.Height / 4
+    function ActiveSide:BeforeRender(macroState)
+        local side = controllerSide(macroState)
+        local visible = side ~= Side.Neither
+        setVisible(self, visible)
+        if not visible then
+            return
+        end
+
+        --Update offsets at runtime to take scale into account
+        if not self.OffsetLeft or not self.OffsetRight then
+            self.OffsetLeft = self.OffsetX
+            self.OffsetRight = Panel.Width - self.Width - self.OffsetX
+        end
+
+        if isSingle or side == Side.Left then
+            self.OffsetX = self.OffsetLeft
+        else
+            self.OffsetX = self.OffsetRight
+        end
+    end
+
+    Textures[ActiveSide.Texture] = ActiveSide
+    FixedObjects:append(ActiveSide)
+
     if (not isSingle) then
         FixedObjects:extend(
             T {
