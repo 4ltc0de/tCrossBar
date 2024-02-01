@@ -212,7 +212,11 @@ function exposed:GetDisplayText()
     
     local paletteCount = #bindings.JobBindings.Palettes;
     if (paletteCount == 1) then
-        return;
+        if (gSettings.AlwaysShowPalette) then
+            return bindings.ActivePalette.Name;
+        else
+            return;
+        end
     else
         return string.format ('%s (%u/%u)', bindings.ActivePalette.Name, bindings.ActivePaletteIndex, paletteCount);
     end

@@ -44,6 +44,7 @@ local defaultSettings = T{
     ShowTrigger = true,
     ShowPalette = true,
     ShowSinglePalette = false,
+    AlwaysShowPalette = false,
 
     --Behavior tab..
     ClickToActivate = true,

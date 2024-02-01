@@ -281,6 +281,8 @@ function exposed:Render()
                     imgui.ShowHelp('Shows selected palette on single display.');
                     CheckBox('Palette(Double)', 'ShowPalette');
                     imgui.ShowHelp('Shows selected palette on double display.');
+                    CheckBox('Always Show Palette', 'AlwaysShowPalette');
+                    imgui.ShowHelp('Shows selected palette, even when there\'s only one.');
                     imgui.EndGroup();
                     imgui.EndTabItem();
                 end
