@@ -16,6 +16,9 @@ local function RecastToString(timer)
         return nil;
     end
 
+    if (gSettings.RecastInSeconds) then
+        return string.format('%i', math.floor(timer / 60));
+    end
     if (timer >= 3600) then
         local h = math.floor(timer / (3600));
         local m = math.floor(timer / 60);

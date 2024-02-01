@@ -56,6 +56,7 @@ local defaultSettings = T{
     ShowDoubleDisplay = true,
     LTRTMode = 'FullDouble',
     SwapToSingleDisplay = false,
+    RecastInSeconds = false,
     AllowInventoryPassthrough = true,
 
     --Controller Tab..

@@ -138,6 +138,9 @@ local function GetRecastTimer(timerId)
 end
 
 local function RecastToString(timer)
+    if (gSettings.RecastInSeconds) then
+        return string.format('%i', math.floor(timer / 60));
+    end
     if (timer >= 216000) then
         local h = math.floor(timer / (216000));
         local m = math.floor(math.fmod(timer, 216000) / 3600);

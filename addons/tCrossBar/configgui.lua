@@ -325,7 +325,9 @@ function exposed:Render()
                         end
                         imgui.EndCombo();
                     end
-
+                    imgui.TextColored(header, 'Format');
+                    CheckBox('Recast In Seconds', 'RecastInSeconds');
+                    imgui.ShowHelp('When enabled, recast time in total seconds instead of minutes and seconds.');
                     imgui.EndTabItem();
                 end
                 
