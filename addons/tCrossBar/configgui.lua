@@ -153,6 +153,10 @@ function exposed:Render()
                         if (imgui.Button('Reset##ResetSingle')) then
                             gSettings.SinglePosition = GetDefaultPosition(gSingleDisplay.Layout);
                             gSingleDisplay:UpdatePosition();
+                            if (gSettings.SyncPositions) then
+                                gSettings.DoublePosition = GetDefaultPosition(gDoubleDisplay.Layout);
+                                gDoubleDisplay:UpdatePosition();
+                            end
                             settings.save();
                         end
                         imgui.ShowHelp('Resets single display to default position.', true);
@@ -168,6 +172,10 @@ function exposed:Render()
                             gInitializer:ApplyLayout();
                             gSettings.SinglePosition = GetDefaultPosition(gSingleDisplay.Layout);
                             gSingleDisplay:UpdatePosition();
+                            if (gSettings.SyncPositions) then
+                                gSettings.DoublePosition = GetDefaultPosition(gDoubleDisplay.Layout);
+                                gDoubleDisplay:UpdatePosition();
+                            end
                             gBindings:Update();
                             settings.save();
                         end
@@ -203,6 +211,10 @@ function exposed:Render()
                         if (imgui.Button('Reset##ResetDouble')) then
                             gSettings.DoublePosition = GetDefaultPosition(gDoubleDisplay.Layout);
                             gDoubleDisplay:UpdatePosition();
+                            if (gSettings.SyncPositions) then
+                                gSettings.SinglePosition = GetDefaultPosition(gSingleDisplay.Layout);
+                                gSingleDisplay:UpdatePosition();
+                            end
                             settings.save();
                         end
                         imgui.ShowHelp('Resets double display to default position.', true);
@@ -218,6 +230,10 @@ function exposed:Render()
                             gInitializer:ApplyLayout();
                             gSettings.DoublePosition = GetDefaultPosition(gDoubleDisplay.Layout);
                             gDoubleDisplay:UpdatePosition();
+                            if (gSettings.SyncPositions) then
+                                gSettings.SinglePosition = GetDefaultPosition(gSingleDisplay.Layout);
+                                gSingleDisplay:UpdatePosition();
+                            end
                             gBindings:Update();
                             settings.save();
                         end
@@ -228,6 +244,9 @@ function exposed:Render()
                         GetLayouts();
                     end
                     imgui.ShowHelp('Reloads available layouts from disk.', true);
+                    imgui.SameLine();
+                    CheckBox('Sync Positions', 'SyncPositions');
+                    imgui.ShowHelp('Makes it so dragging the single/double crossbar moves the other to the same position');
                     imgui.EndTabItem();
                 end
                 

@@ -30,6 +30,7 @@ local defaultSettings = T{
     DoubleLayout = 'classic',
     DoubleScale = 1.0,
     TriggerDuration = 0.25,
+    SyncPositions = false,
     ShowEmpty = true,
     ShowFrame = true,
     ShowCost = true,

@@ -176,6 +176,13 @@ function DoubleDisplay:HandleMouse(e)
         self:UpdatePosition();
         if (e.message == 514) or (not self.AllowDrag) then
             dragActive = false;
+            if (gSettings.SyncPositions) then
+                local defaultSinglePosition = GetDefaultPosition(gSingleDisplay.Layout);
+                local defaultDoublePosition = GetDefaultPosition(self.Layout);
+                gSettings.SinglePosition[1] = defaultSinglePosition[1] + pos[1] - defaultDoublePosition[1];
+                gSettings.SinglePosition[2] = defaultSinglePosition[2] + pos[2] - defaultDoublePosition[2];
+                gSingleDisplay:UpdatePosition();
+            end
             settings.save();
         end
     elseif (self.AllowDrag) and (e.message == 513) and self:DragTest(e) then
