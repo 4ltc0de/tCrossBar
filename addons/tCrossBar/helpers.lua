@@ -74,9 +74,10 @@ function GetDefaultPosition(layout)
         return { 0, 0 };
     else
         --Centered horizontally, vertically just above chat log.
+        --Can be adjusted via OffsetX/Y in the layout file
         return {
-            (scaling.window.w - layout.Panel.Width) / 2,
-            scaling.window.h - (scaling.scale_height(136) + layout.Panel.Height)
+            (scaling.window.w - layout.Panel.Width) / 2 + (layout.Panel.OffsetX or 0),
+            scaling.window.h - (scaling.scale_height(136) + layout.Panel.Height) + (layout.Panel.OffsetY or 0),
         };
     end
 end
