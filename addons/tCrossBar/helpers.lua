@@ -1,3 +1,5 @@
+local scaling = require('scaling');
+
 function GetImagePath(image, default)
     if (string.sub(image, 1, 5) == 'ITEM:') then
         return image;
@@ -65,4 +67,16 @@ function LoadFile_s(filePath)
     end
 
     return output;
+end
+
+function GetDefaultPosition(layout)
+    if ((scaling.window.w == -1) or (scaling.window.h == -1) or (scaling.menu.w == -1) or (scaling.menu.h == -1)) then
+        return { 0, 0 };
+    else
+        --Centered horizontally, vertically just above chat log.
+        return {
+            (scaling.window.w - layout.Panel.Width) / 2,
+            scaling.window.h - (scaling.scale_height(136) + layout.Panel.Height)
+        };
+    end
 end

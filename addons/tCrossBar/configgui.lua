@@ -1,6 +1,5 @@
 local header = { 1.0, 0.75, 0.55, 1.0 };
 local imgui = require('imgui');
-local scaling = require('scaling');
 local state = {
     IsOpen = { false }
 };
@@ -30,18 +29,6 @@ local validControls = T{
     { Name='BindingCancel', Description='Cancels current settings in binding menu and returns to macro select screen.' },
     { Name='BindingTab', Description='Changes tab in binding menu.' },
 };
-
-local function GetDefaultPosition(layout)
-    if ((scaling.window.w == -1) or (scaling.window.h == -1) or (scaling.menu.w == -1) or (scaling.menu.h == -1)) then
-        return { 0, 0 };
-    else
-        --Centered horizontally, vertically just above chat log.
-        return {
-            (scaling.window.w - layout.Panel.Width) / 2,
-            scaling.window.h - (scaling.scale_height(136) + layout.Panel.Height)
-        };
-    end
-end
 
 local function GetLayouts()
     local layouts = T{};

@@ -11,7 +11,6 @@ settings         = require('settings');
 
 local d3d8       = require('d3d8');
 local ffi        = require('ffi');
-local scaling    = require('scaling');
 
 --Create directories..
 local controllerConfigFolder = string.format('%sconfig/addons/%s/resources/controllers', AshitaCore:GetInstallPath(), addon.name);
@@ -146,18 +145,6 @@ local function PrepareLayout(layout, scale)
 
     layout.FadeOpacity = d3d8.D3DCOLOR_ARGB(layout.FadeOpacity, 255, 255, 255);
     layout.TriggerOpacity = d3d8.D3DCOLOR_ARGB(layout.TriggerOpacity, 255, 255, 255);
-end
-
-local function GetDefaultPosition(layout)
-    if ((scaling.window.w == -1) or (scaling.window.h == -1) or (scaling.menu.w == -1) or (scaling.menu.h == -1)) then
-        return { 0, 0 };
-    else
-        --Centered horizontally, vertically just above chat log.
-        return {
-            (scaling.window.w - layout.Panel.Width) / 2,
-            scaling.window.h - (scaling.scale_height(136) + layout.Panel.Height)
-        };
-    end
 end
 
 --Create exports..
