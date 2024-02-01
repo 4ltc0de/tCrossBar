@@ -132,8 +132,10 @@ function DoubleDisplay:Render(macroState, forceSingle)
         end
     end
     
-    for _,element in ipairs(renderElements) do
-        element:RenderText(sprite);
+    local rightSideOnly = (macroState == 2) and (forceSingle);
+    local indexOffset = rightSideOnly and 8 or 0;
+    for index, element in ipairs(renderElements) do
+        element:RenderText(sprite, index + indexOffset, macroState);
     end
 
     if (self.AllowDrag) then

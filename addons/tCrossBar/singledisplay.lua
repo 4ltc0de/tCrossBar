@@ -108,8 +108,8 @@ function SingleDisplay:Render(macroState)
         for _,element in ipairs(group) do
             element:RenderIcon(sprite);
         end
-        for _,element in ipairs(group) do
-            element:RenderText(sprite);
+        for index, element in ipairs(group) do
+            element:RenderText(sprite, index, macroState);
         end
     end
     

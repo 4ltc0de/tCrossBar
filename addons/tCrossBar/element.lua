@@ -252,7 +252,7 @@ function Element:RenderIcon(sprite)
     end
 end
 
-function Element:RenderText(sprite)
+function Element:RenderText(sprite, index, macroState)
     if (self.Binding == nil) then
         return;
     end
@@ -265,7 +265,11 @@ function Element:RenderText(sprite)
         local setting = 'Show' .. entry;
         if (gSettings[setting]) and (self.Binding[setting]) then
             local obj = self.FontObjects[entry];
-            if obj then
+            local layout = self.Layout[entry];
+            if (type(layout.BeforeRender) == 'function') then
+                layout:BeforeRender(index, obj, macroState)
+            end
+            if obj and obj.settings.visible then
                 local text = self.State[entry];
                 if (type(text) == 'string') and (text ~= '') then
                     obj:set_text(text);
