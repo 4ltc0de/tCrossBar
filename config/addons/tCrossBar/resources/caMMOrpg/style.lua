@@ -21,6 +21,10 @@ return T {
         FontColor = Color.White,
         Alignment = Font.Alignment.Center,
         Outline = 0x99335599,
+        Background = T {
+            Width = 160,
+            Height = 30,
+        },
     },
     Hotkey = T {
         Typeface = 'Arial Black',

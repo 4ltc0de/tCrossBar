@@ -5,6 +5,7 @@ local FramesPerGroup = FramesPerCrossbar / GroupsPerCrossbar
 Color = T {
     White = 0xFFFFFFFF,
     Black = 0xFF000000,
+    Black_50 = 0x80000000,
     Transparent = 0x00000000,
 }
 Font = T {
@@ -248,6 +249,12 @@ function CaMMOrpg:Layout(frameType, crossbars)
         obj.OffsetY = adjustment[2]
     end
 
+    Name.Background.Texture = 'NameBackground'
+    Name.Background.Path = ResRoot .. 'name_background.png'
+    Name.Background.OffsetX = -Name.Background.Width / 2
+    Name.Background.OffsetY = -ShiftY
+    Textures[Name.Background.Texture] = Name.Background
+
     local Hotkey = layout.Hotkey
     Hotkey.OffsetX = ShiftX
     Hotkey.OffsetY = -Hotkey.Size / 4 + ShiftY
@@ -336,6 +343,33 @@ function CaMMOrpg:Layout(frameType, crossbars)
         local offsetY = rowOffset + rowSpacing
 
         Elements[i] = { OffsetX = offsetX, OffsetY = offsetY }
+
+        FixedObjects:append(T {
+            Texture = Name.Background.Texture,
+            OffsetX = offsetX + Name.Background.OffsetX,
+            OffsetY = offsetY + Name.Background.OffsetY,
+            BeforeRender = function(self, macroState)
+                if not self.originalOffsetX or not self.originalOffsetY then
+                    self.originalOffsetX = self.OffsetX
+                    self.originalOffsetY = self.OffsetY
+                end
+                Name:BeforeRender(i, self, macroState)
+                self.OffsetX = self.OffsetX + self.originalOffsetX
+                self.OffsetY = self.OffsetY + self.originalOffsetY
+
+                local element = isSingle
+                    and gSingleDisplay:GetElementByMacro(macroState, i)
+                    or gDoubleDisplay.Elements[i]
+                if element and element.State then
+                    local name = element.State.Name
+                    if type(name) == 'string' and name ~= '' then
+                        self.Tint = nil
+                    else
+                        self.Tint = Color.Black_50
+                    end
+                end
+            end,
+        })
     end
 
     for key, texture in pairs(Textures) do
