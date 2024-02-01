@@ -70,7 +70,7 @@ function LoadFile_s(filePath)
 end
 
 function GetDefaultPosition(layout)
-    if ((scaling.window.w == -1) or (scaling.window.h == -1) or (scaling.menu.w == -1) or (scaling.menu.h == -1)) then
+    if ((not layout) or (not layout.Panel) or (scaling.window.w == -1) or (scaling.window.h == -1) or (scaling.menu.w == -1) or (scaling.menu.h == -1)) then
         return { 0, 0 };
     else
         --Centered horizontally, vertically just above chat log.
