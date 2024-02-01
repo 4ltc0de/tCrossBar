@@ -4,10 +4,10 @@ return T {
         Size = 60,
     },
     Group = T {
-        Spacing = 100,
+        Spacing = 10,
     },
     Crossbar = T {
-        Spacing = 100,
+        Spacing = 16,
     },
     --Fonts are defaulted to Windows fonts, but some open-source fonts may look better
     --Recommended font replacements are:

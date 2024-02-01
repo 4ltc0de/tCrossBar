@@ -87,6 +87,32 @@ local function getPosition(index)
     }
 end
 
+local Side = {
+    Neither = -1,
+    Left = 0,
+    Right = 1,
+    Both = 3,
+}
+local function controllerSide(controllerState)
+    if controllerState == 1 or controllerState == 5 then
+        return Side.Left
+    elseif controllerState == 2 or controllerState == 6 then
+        return Side.Right
+    elseif controllerState == 3 or controllerState == 4 then
+        return Side.Both
+    else
+        return Side.Neither
+    end
+end
+
+local function setVisible(obj, visible)
+    if type(obj.settings) == 'table' and obj.settings.visible ~= nil then
+        obj.settings.visible = visible
+    else
+        obj.visible = visible
+    end
+end
+
 CaMMOrpg.FrameType = T {
     Circle = "circle",
     Square = "square",
@@ -178,7 +204,49 @@ function CaMMOrpg:Layout(frameType, crossbars)
 
     local Name = layout.Name
     Name.OffsetX = Frame.Width / 2
-    Name.OffsetY = -Frame.Height * 1.75
+    Name.OffsetY = -Frame.Height * 1.6
+    Name.SideSpreadMultiplier = 3
+    Name.ColumnSpreadMultiplier = 1
+    Name.RowSpreadMultiplier = 1 / 20
+    function Name:BeforeRender(index, obj, macroState)
+        local position = getPosition(index)
+        local heldSide = controllerSide(macroState)
+
+        local visible = heldSide ~= Side.Neither
+            and (isSingle or heldSide == position.crossbarSide)
+        setVisible(obj, visible)
+        if not visible then
+            return
+        end
+
+        if not self.GroupSideSpreadX
+            or self.ColumnSpreadX
+            or self.RowSpreadY then
+            self.GroupSideSpreadX = self.OffsetX * self.SideSpreadMultiplier
+            self.ColumnSpreadX = self.OffsetX * self.ColumnSpreadMultiplier
+            self.RowSpreadY = self.OffsetY * self.RowSpreadMultiplier
+        end
+
+        if not self.adjustmentCache then
+            self.adjustmentCache = T {}
+        end
+
+        local adjustment = self.adjustmentCache[index]
+        if not adjustment then
+            local groupSideMultiplier = position.groupSide == Side.Left and -1 or 1
+            local groupSideSpreadX = groupSideMultiplier * (self.GroupSideSpreadX or 0)
+            local columnSpreadX = position.column * (self.ColumnSpreadX or 0)
+            local rowSpreadY = position.row * (self.RowSpreadY or 0)
+            adjustment = {
+                self.OffsetX + groupSideSpreadX + columnSpreadX,
+                self.OffsetY + rowSpreadY
+            }
+            self.adjustmentCache[index] = adjustment
+        end
+
+        obj.OffsetX = adjustment[1]
+        obj.OffsetY = adjustment[2]
+    end
 
     local Hotkey = layout.Hotkey
     Hotkey.OffsetX = ShiftX
@@ -262,7 +330,7 @@ function CaMMOrpg:Layout(frameType, crossbars)
 
         local columnOffset = (position.column + 1) * Icon.Width
         local rowOffset = (position.row + 1) * Icon.Height / 2
-        local rowSpacing = position.row * ShiftY * 2
+        local rowSpacing = position.row * ShiftY * 4
 
         local offsetX = columnOffset + groupSpacing + crossbarSpacing
         local offsetY = rowOffset + rowSpacing
