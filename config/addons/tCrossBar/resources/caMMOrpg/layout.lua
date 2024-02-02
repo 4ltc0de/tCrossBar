@@ -287,6 +287,7 @@ function CaMMOrpg:Layout(frameType, crossbars)
     Label.L2.Height = Label.Size
     Label.L2.OffsetX = Crossbar.Width / 2 - Label.L2.Width / 2
     Label.L2.OffsetY = Label.L2.Height / 2
+    Label.L2.AssociatedState = 1
     Textures[Label.L2.Texture] = Label.L2
 
     Label.Set = T {}
@@ -309,6 +310,7 @@ function CaMMOrpg:Layout(frameType, crossbars)
     Label.R2.Height = Label.L2.Height
     Label.R2.OffsetX = Crossbar.Width + Label.L2.OffsetX + Crossbar.OffsetX
     Label.R2.OffsetY = Label.L2.OffsetY
+    Label.R2.AssociatedState = 2
     Textures[Label.R2.Texture] = Label.R2
 
     local Divider = T {}
@@ -449,7 +451,8 @@ function CaMMOrpg:Layout(frameType, crossbars)
         --Size of entire panel.  Used for prescreening element clicks and automatic positioning.  Not enforced for rendering.
         Panel = Panel,
 
-        --Texture must be defined in textures table. Objects are rendered in order, prior to square elements.
+        --Texture must be defined in textures table.  Objects are rendered in order, prior to square elements.
+        --For double display only, you can specify a macroState (1 = LT, 2 = RT) as AssociatedState to limit the display to that macro state in HalfFull mode.
         FixedObjects = FixedObjects,
 
         --[[
